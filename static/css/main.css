@@ -1,0 +1,179 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    
+}
+
+body {
+    color: black;
+    margin: 0;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    text-align:center;
+    color: blue;
+}
+
+.title span {
+    color:red;
+}
+.game-box {
+    background:white;
+    border
+    margin: 50px;
+    padding: 50px;
+    border-radius: 25px;
+}
+
+.status-action {
+    font-size: 17px;
+    text-align: right;
+}
+
+.easy, .medium, .hard {
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.player-score, .com-score {
+    font-size: 17px;
+}
+
+.player-start {
+    cursor: pointer;
+}
+
+.player-start:hover {
+    color: darkgrey;
+}
+
+.player-start-set {
+    color: darkgray;
+}
+
+.reset {
+    cursor: pointer;
+}
+
+.reset:hover{
+    color: darkgray;
+}
+
+.game-grid {
+    background: black;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 15px;
+    margin-top: 50px;
+}
+
+.game-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+    background: white;
+}
+
+.x , .o {
+    cursor: default;
+}
+
+.x::after {
+    content: '×';
+    color: red;
+    font-size: 200px;
+}
+
+.o::after {
+    content: '○';
+    color: blue;
+    font-size: 200px;
+}
+
+.currentDifficulty {
+    cursor: default;
+    color: darkgray;
+}
+
+.won::after {
+    color: green;
+}
+
+@media only screen and (max-width: 1024px) {
+    .game-grid {
+        margin-top: 25px;
+        grid-gap: 10px;
+    }
+
+    .game-cell {
+        height: 150px;
+        width: 150px;
+    }
+
+    .x::after {
+        font-size: 150px;
+    }
+
+    .o::after {
+        font-size: 150px;
+    }
+    .status-action {
+        font-size: 13px;
+        width: auto;
+    }
+    
+    .easy, .medium, .hard {
+        font-size: 13px;
+        width: auto;
+    }
+    
+    .player-score, .com-score {
+        font-size: 13px;
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .game-box {
+        margin: 25px;
+        padding: 25px;
+    }
+
+    .game-cell {
+        height: 100px;
+        width: 100px;
+    }
+
+    .x::after {
+        font-size: 100px;
+    }
+
+    .o::after {
+        font-size: 100px;
+    }
+
+    .status-action {
+        font-size: 10px;
+    }
+    
+    .easy, .medium, .hard {
+        font-size: 10px;
+    }
+    
+    .player-score, .com-score {
+        font-size: 10px;
+    }
+
+    .col-sm {
+        width: auto !important; 
+    }
+
+}
