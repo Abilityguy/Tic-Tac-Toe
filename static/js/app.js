@@ -1,13 +1,13 @@
 //HTML ELements
 const statusDiv = document.querySelector('.status');
 const resetDiv = document.querySelector('.reset');
-const cellDivs = document.querySelectorAll('.game-cell')
-const playerScore = document.querySelector('.player-score')
-const computerScore = document.querySelector('.com-score')
-const easyDiv = document.querySelector('.easy')
-const mediumDiv = document.querySelector('.medium')
-const hardDiv = document.querySelector('.hard')
-const playerStartDiv = document.querySelector('.player-start')
+const cellDivs = document.querySelectorAll('.game-cell');
+const playerScore = document.querySelector('.player-score');
+const computerScore = document.querySelector('.com-score');
+const easyDiv = document.querySelector('.easy');
+const mediumDiv = document.querySelector('.medium');
+const hardDiv = document.querySelector('.hard');
+const playerStartDiv = document.querySelector('.player-start');
 
 //game variables
 var game = {
@@ -19,30 +19,32 @@ var game = {
     playerTurn: true,
     playerStarts: true,
     gameBoard: [' ',' ',' ',' ',' ',' ',' ',' ',' '],
-    difficulty: 0
+    difficulty: 2
 }
 
 //event handlers
 const handleReset = (e) => {
     for (const cellDiv of cellDivs) {
-        cellDiv.classList.remove('x')
-        cellDiv.classList.remove('o')
-        cellDiv.classList.remove('won')
+        cellDiv.classList.remove('x');
+        cellDiv.classList.remove('o');
+        cellDiv.classList.remove('won');
     }
-    game['gameIsLive'] = true
-    playerScore.innerHTML = `Player Score: ${game['scorePlayer']}`
-    computerScore.innerHTML = `Computer Score: ${game['scoreComputer']}`
-    resetBoard()
+
+    game['gameIsLive'] = true;
+    playerScore.innerHTML = `Player Score: ${game['scorePlayer']}`;
+    computerScore.innerHTML = `Computer Score: ${game['scoreComputer']}`;
+    resetBoard();
+
     if(game['playerStarts']) {
-        game['playerTurn'] = true
+        game['playerTurn'] = true;
         game['Player'] = 'x';
         game['Computer'] = 'o';
     }
     else {
-        game['playerTurn'] = false
+        game['playerTurn'] = false;
         game['Player'] = 'o';
         game['Computer'] = 'x';
-        calculateMove()
+        calculateMove();
     }
 }
 
@@ -175,11 +177,24 @@ const checkGameStatus = () => {
         return;
     }
     if(!boardEmpty()) {
+        handleTie()
+    }
+}
+const handleWin = (mark,cell1, cell2, cell3) => {
+    game['gameIsLive'] = false;
+    cellDivs[cell1].classList.add('won')
+    cellDivs[cell2].classList.add('won')
+    cellDivs[cell3].classList.add('won')
 
+    if(game['Player'] == mark) {
+        game['scorePlayer'] = game['scorePlayer'] + 1
+    }
+    else {
+        game['scoreComputer'] = game['scoreComputer'] +  1
     }
 }
 
-const HandleTie = () => {
+const handleTie = () => {
     game['gameIsLive'] = false;
 }
 
@@ -225,19 +240,7 @@ const positionToIndex = (pos) => {
     }
 }
 
-const handleWin = (mark,cell1, cell2, cell3) => {
-    game['gameIsLive'] = false;
-    cellDivs[cell1].classList.add('won')
-    cellDivs[cell2].classList.add('won')
-    cellDivs[cell3].classList.add('won')
 
-    if(game['Player'] == mark) {
-        game['scorePlayer'] = game['scorePlayer'] + 1
-    }
-    else {
-        game['scoreComputer'] = game['scoreComputer'] +  1
-    }
-}
 
 const calculateMove = () => {
     const data = JSON.stringify({'difficulty':game['difficulty'],'board':game['gameBoard'], 'computer':game['Computer'], 'player':game['Player']})

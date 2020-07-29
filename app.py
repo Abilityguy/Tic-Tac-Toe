@@ -1,3 +1,13 @@
+# ************************
+# Tic Tac Toe game
+#
+# Three Difficulty modes
+#   Easy
+#   Medium
+#   Hard
+#
+# ************************
+
 from flask import Flask, render_template, url_for, jsonify, request
 from logic import Easy, Medium, Hard
 
@@ -13,6 +23,7 @@ def move():
 
     difficulty = state.get('difficulty')
 
+    #Choose game mode based on difficulty
     if(difficulty == 0):
         game = Easy()
     elif(difficulty == 1):
@@ -24,12 +35,12 @@ def move():
     game.player = state.get('player')
     game.computer = state.get('computer')
 
+    #Calculate computer move
     move = game.calculate_move()
-    if(move != -1):
-        game.make_move(move)
 
-    return jsonify(computerMove = move, board = game.board)
+    # Response sent with calculated move
+    return jsonify(computerMove = move)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
