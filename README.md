@@ -4,7 +4,8 @@ Tic Tac Toe game using Flask framework. The AI has three modes of difficulty.
 * Medium
 * Hard
 
-Have fun!
+Inside [logic.py](https://github.com/Abilityguy/Tic-Tac-Toe/blob/master/logic.py) 
+is the code for different difficulty modes. Have fun!
 
 ##  Install
 ```
@@ -16,7 +17,7 @@ python3 app.py
 ```
 and navigate to `http://localhost:5000/`
 
-## Logic
+## Live Project
+You can also play the game [here](https://ttt-ability-app.herokuapp.com/).
 
-Inside [logic.py](https://github.com/Abilityguy/Tic-Tac-Toe/blob/master/logic.py) 
-is the code for different difficulty modes.
+![Example](./static/img/screenshot.png)
