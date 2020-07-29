@@ -23,6 +23,8 @@ var game = {
 }
 
 //event handlers
+
+//Reset function
 const handleReset = (e) => {
     for (const cellDiv of cellDivs) {
         cellDiv.classList.remove('x');
@@ -30,16 +32,19 @@ const handleReset = (e) => {
         cellDiv.classList.remove('won');
     }
 
+    //Update Scores
     game['gameIsLive'] = true;
     playerScore.innerHTML = `Player Score: ${game['scorePlayer']}`;
     computerScore.innerHTML = `Computer Score: ${game['scoreComputer']}`;
     resetBoard();
 
+    // 'x' always starts
     if(game['playerStarts']) {
         game['playerTurn'] = true;
         game['Player'] = 'x';
         game['Computer'] = 'o';
     }
+
     else {
         game['playerTurn'] = false;
         game['Player'] = 'o';
@@ -48,11 +53,13 @@ const handleReset = (e) => {
     }
 }
 
+// Adds mark to board
 const handleCellClick = (e) => {
     const classList = e.target.classList;
     const pos = classList[1]
     const cellNo = positionToIndex(pos)
     
+    // Return if cell is already occupied or game is not live
     if(!game['gameIsLive'] || classList[2] == game['Player'] || classList[2] == game['Computer']) {
         return;
     }
@@ -68,9 +75,11 @@ const handleCellClick = (e) => {
         return;
     }
 
+    //Make computer move
     calculateMove()
 }
 
+//Change difficulty to easy
 const handleEasyClick = (e) => {
     const classList = e.target.classList;
     classList.add('currentDifficulty')
@@ -80,6 +89,7 @@ const handleEasyClick = (e) => {
     handleReset()
 }
 
+//Change difficulty to medium
 const handleMediumClick = (e) => {
     const classList = e.target.classList;
     classList.add('currentDifficulty')
@@ -88,6 +98,8 @@ const handleMediumClick = (e) => {
     game['difficulty'] = 1;
     handleReset()
 }
+
+//Change difficulty to hard
 const handleHardClick = (e) => {
     const classList = e.target.classList;
     classList.add('currentDifficulty')
@@ -97,6 +109,7 @@ const handleHardClick = (e) => {
     handleReset()
 }
 
+//Toggle player start
 const handlePlayerStartClick = (e) => {
     const classList = e.target.classList;
     if(classList[2] == 'player-start-set')  {
@@ -122,7 +135,9 @@ hardDiv.addEventListener('click',handleHardClick);
 
 playerStartDiv.addEventListener('click',handlePlayerStartClick);
 
-//functions
+// game logic functions
+
+//Check if game is won or tied
 const checkGameStatus = () => {
     const topLeft = cellDivs[0].classList[2];
     const topMid = cellDivs[1].classList[2];
@@ -139,12 +154,10 @@ const checkGameStatus = () => {
         handleWin(topLeft,0,1,2);
         return;
     }
-
     else if(midLeft && midLeft == midMid && midLeft == midRight ) {
         handleWin(midLeft,3,4,5);
         return;
     }
-
     else if(botLeft && botLeft == botMid && botLeft == botRight ) {
         handleWin(botLeft,6,7,8);
         return;
@@ -155,12 +168,10 @@ const checkGameStatus = () => {
         handleWin(topLeft,0,3,6);
         return;
     }
-
     else if(topMid && topMid == midMid && topMid == botMid ) {
         handleWin(topMid,1,4,7);
         return;
     }
-
     else if(topRight && topRight == midRight && topRight == botRight ) {
         handleWin(topRight,2,5,8);
         return;
@@ -171,15 +182,18 @@ const checkGameStatus = () => {
         handleWin(topLeft,0,4,8);
         return;
     }
-
     if(topRight && topRight == midMid && topRight == botLeft ) {
         handleWin(topRight,2,4,6);
         return;
     }
+    
+    // Tie
     if(!boardEmpty()) {
         handleTie()
     }
 }
+
+// Update color of winning combination and scores
 const handleWin = (mark,cell1, cell2, cell3) => {
     game['gameIsLive'] = false;
     cellDivs[cell1].classList.add('won')
@@ -201,6 +215,8 @@ const handleTie = () => {
 const resetBoard = () => {
     game['gameBoard'] = [' ',' ',' ',' ',' ',' ',' ',' ',' ']
 }
+
+// Returns true if board is empty 
 const boardEmpty = () => {
     for (const cell of game['gameBoard']) {
         if (cell == ' ') {
@@ -210,6 +226,7 @@ const boardEmpty = () => {
     return false
 }
 
+// Returns index based on class of cell
 const positionToIndex = (pos) => {
     if(pos == 'top-left') {
         return 0
@@ -240,8 +257,7 @@ const positionToIndex = (pos) => {
     }
 }
 
-
-
+// Send a request to calculate computer move
 const calculateMove = () => {
     const data = JSON.stringify({'difficulty':game['difficulty'],'board':game['gameBoard'], 'computer':game['Computer'], 'player':game['Player']})
     const xhr = new XMLHttpRequest()
@@ -251,6 +267,7 @@ const calculateMove = () => {
     xhr.send(data)
 }
 
+// Update the board according to response
 function comMove() {
     if(this.readyState == 4 && this.status == 200) {      
         response = JSON.parse(this.responseText)
@@ -263,19 +280,5 @@ function comMove() {
         game['gameBoard'][cellNo] = game['Computer']
         game['playerTurn'] = !game['playerTurn']
         checkGameStatus()
-    }
-}
-
-//Requests 
-function getData() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/move')
-    xhr.onreadystatechange = processData;
-    xhr.send()
-}
-
-function processData() {
-    if(this.readyState == 4 && this.status == 200) {
-        console.log(JSON.parse(this.responseText))
     }
 }

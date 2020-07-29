@@ -47,10 +47,6 @@ body {
     cursor: pointer;
 }
 
-.player-start:hover {
-    color: darkgrey;
-}
-
 .player-start-set {
     color: darkgray;
 }
